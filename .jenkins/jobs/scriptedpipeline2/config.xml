@@ -1,0 +1,37 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<flow-definition plugin="workflow-job@1268.v6eb_e2ee1a_85a">
+  <actions/>
+  <description></description>
+  <keepDependencies>false</keepDependencies>
+  <properties/>
+  <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@3606.v0b_d8b_e512dcf">
+    <script>node(&apos;built-in&apos;) 
+{
+    stage(&apos;ContinuousDownloads&apos;)
+    {
+       git &apos;https://github.com/intelliqittrainings/maven.git&apos;   
+    }
+    stage(&apos;ContinuousBuild&apos;)
+    {
+        sh &apos;mvn package&apos;
+    }
+    stage(&apos;ContinuousDeployment&apos;)
+     {
+         deploy adapters: [tomcat9(credentialsId: &apos;74499703-c6dc-4530-8fb8-3de457f8ee6f&apos;, path: &apos;&apos;, url: &apos;http://10.1.4.34:8080&apos;)], contextPath: &apos;testapp&apos;, war: &apos;**/*.war&apos;
+     }
+    stage(&apos;ContinuousTesting&apos;)
+    {
+        git &apos; https://github.com/intelliqittrainings/FunctionalTesting.git&apos;
+        sh &apos;java -jar testing.jar&apos;
+    }
+    stage(&apos;ContinuousDelivery&apos;)
+    {
+        input message: &apos;need approval from dm!&apos;, submitter: &apos;rama&apos;
+        deploy adapters: [tomcat9(credentialsId: &apos;fd4de81e-ae4d-4ca4-b8f2-584d4234e445&apos;, path: &apos;&apos;, url: &apos;http://10.1.4.146:8080&apos;)], contextPath: &apos;prodapp&apos;, war: &apos;**/*.war&apos;
+    }
+}</script>
+    <sandbox>true</sandbox>
+  </definition>
+  <triggers/>
+  <disabled>false</disabled>
+</flow-definition>
