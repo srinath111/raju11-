@@ -1,6 +1,6 @@
 node('built-in') 
 {
-    stage('ContinuousDownloads')
+    stage('ContinuousNownloads')
     {
        git 'https://github.com/intelliqittrainings/maven.git'   
     }
