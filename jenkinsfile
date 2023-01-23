@@ -14,7 +14,7 @@ node('built-in')
      }
     stage('ContinuousTesting')
     {
-        git ' https://github.com/intelliqittrainings/FunctionalTesting.git'
+        git 'https://github.com/selenium-saikrishna/TestingOnLinux.git'
         sh 'java -jar testing.jar'
     }
     stage('ContinuousDelivery')
